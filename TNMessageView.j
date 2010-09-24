@@ -18,7 +18,10 @@
 
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
- 
+
+
+/*! CPView that contains information to display chat information
+*/
 @implementation TNMessageView : CPView
 {
     CPTextField             _fieldAuthor;
@@ -32,13 +35,25 @@
     CPString                _timestamp;
 }
 
-/*! CPCollectionView protocol impl.
+/*! instanciate a TNMessageView
+    @param anAuthor sender of the message
+    @param aSubject subject of the message (not used)
+    @param aMessage the content of the message
+    @param aTimestamp the date of the message
+    @param aColor a CPColor that will be used as background
+    
+    @return initialized view
 */
-
 - (void)initWithFrame:aFrame author:(CPString)anAuthor subject:(CPString)aSubject message:(CPString)aMessage timestamp:(CPString)aTimestamp backgroundColor:(CPColor)aColor
 {
     if (self = [super initWithFrame:aFrame])
     {
+        _author     = anAuthor;
+        _subject    = aSubject;
+        _message    = aMessage;
+        _timestamp  = aTimestamp;
+        _bgColor    = aColor;
+        
         [self setAutoresizingMask:CPViewWidthSizable];
         
         _fieldAuthor = [[CPTextField alloc] initWithFrame:CGRectMake(10,10, CGRectGetWidth(aFrame) - 10, 20)];
@@ -61,12 +76,6 @@
         [self addSubview:_fieldAuthor];
         [self addSubview:_fieldMessage];
         [self addSubview:_fieldTimestamp];
-
-        _author     = anAuthor;
-        _subject    = aSubject;
-        _message    = aMessage;
-        _timestamp  = aTimestamp;
-        _bgColor    = aColor;
         
         [_fieldAuthor setStringValue:_author];
         [_fieldMessage setStringValue:_message];
@@ -81,18 +90,20 @@
     return self;
 }
 
+/*! called by TNStackView. This will resize the content of the message's CPTextField in heigth
+    according to it's size its own frame to display this field.
+*/
 - (void)layout
 {
     var frame           = [self frame];
     var messageHeight   = [_message sizeWithFont:[CPFont systemFontOfSize:12] inWidth:CGRectGetWidth(frame)].height;
     var messageFrame    = [_fieldMessage frame];
-
+    
     messageFrame.size.height = messageHeight + 10;
     frame.size.height =  messageFrame.size.height + 30;
     
     [self setFrame:frame];
     [_fieldMessage setFrame:messageFrame];
     [_fieldMessage setSelectable:YES];
-    
 }
 @end

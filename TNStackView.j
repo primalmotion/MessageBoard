@@ -1,5 +1,5 @@
 /*  
- * TNMessageView.j
+ * TNStackView.j
  *    
  * Copyright (C) 2010 Antoine Mercadal <antoine.mercadal@inframonde.eu>
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,14 @@
 @import <AppKit/AppKit.j>
 
 
+/*! This class allows to create a view that can stack  different subviews.
+    It will resize if in width to fill completely the view, but keeps the height
+    It is also possible to set padding between views and reverse it.
+    
+    when the positionning of the view is done, it will call eventual selector [aStackedView layout]
+    of each subviews. The subview can then, if needed adjust its height, it's content
+    call it's mom or whatever
+*/
 @implementation TNStackView: CPView
 {
     CPArray     _dataSource     @accessors(property=dataSource);
@@ -30,6 +38,10 @@
     
 }
 
+/*! initialize the TNStackView
+    @param aFrame the frame
+    @return a instancied TNStackView
+*/
 - (id)initWithFrame:(CPRect)aFrame
 {
     if(self = [super initWithFrame:aFrame])
@@ -43,6 +55,8 @@
     return self;
 }
 
+/*! @ignore
+*/
 - (CPRect)_nextPosition
 {
     var lastStackedView = [_stackedViews lastObject];
@@ -62,7 +76,8 @@
     return position
 }
 
-
+/*! reload the content of the datasource
+*/
 - (void)reload
 {
     var frame = [self frame];
@@ -82,7 +97,8 @@
     [self layout];
 }
 
-
+/*! @position the different subviews in the daasource
+*/
 - (void)layout
 {
     var stackViewFrame  = [self frame];
@@ -116,6 +132,8 @@
     [self setFrame:stackViewFrame];
 }
 
+/*! remove all items as an IBAction
+*/
 - (IBAction)removeAllViews:(id)aSender
 {
     [_dataSource removeAllObjects];
@@ -123,6 +141,9 @@
     [self reload];
 }
 
+
+/*! reverse the display of the view (but not in the Datasource) as an IBAction
+*/
 - (IBAction)reverse:(id)sender
 {
     _reversed = !_reversed;

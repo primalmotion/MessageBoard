@@ -22,12 +22,18 @@
 @import "TNMessageView.j";
 @import "TNStackView.j";
 
+/*! Subclass of TNStackView that is specialized to stacks TNMessageViews
+*/
 @implementation TNMessageBoard : TNStackView 
 {
     CPArray     _messageDicts;
     CPArray     _messageViews;
 }
 
+/*! initialize the TNMessageBoard
+    @param aFrame the frame
+    @return new initialized TNMessageBoard
+*/
 - (id)initWithFrame:(CPRect)aFrame
 {
     if(self = [super initWithFrame:aFrame]) 
@@ -41,7 +47,12 @@
     return self;
 }
 
-
+/*! stack a new message
+    @param aMessage the content of the message
+    @param anAuthor sender of the message    
+    @param aColor a CPColor that will be used as background
+    @param aDate the date of the message
+*/
 - (void)addMessage:(CPString)aMessage from:(CPString)anAuthor color:(CPColor)aColor date:(CPDate)aDate
 {
     var messageView = [[TNMessageView alloc] initWithFrame:CPRectMake(0, 0, 100, 100)
@@ -59,11 +70,13 @@
     
 }
 
+/*! remove all message. 
+    I know it's useless because it's already in the superclass
+    But I don't want to modifiy this in archipel.
+    You should not use it and directly call removeAllViews
+*/
 - (IBAction)removeAllMessages:(id)aSender
 {
     [self removeAllViews:aSender];
-    [self reload]
 }
-
-
 @end
