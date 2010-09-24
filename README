@@ -3,10 +3,11 @@
 
 <h3>What is MessageBoard ?</h3>
 ---------------------------
-<p>This is a set of classes uses to easily create a stacked message board
+<p>MessageBoard is a set of classes uses to easily create a stacked message board
 This Library is used by Archipel Project.
 This library is released under AGPL license. Feel 
-free to use it or improve it.</p>
+free to use it or improve it.
+</p>
 
 <h3>Quick Start</h3>
 -----------
