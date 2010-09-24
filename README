@@ -1,0 +1,20 @@
+<h2>Strophe Cappuccino</h2>
+------------------
+
+<h3>What is MessageBoard ?</h3>
+---------------------------
+<p>This is a set of classes uses to easily create a stacked message board
+This Library is used by Archipel Project.
+This library is released under AGPL license. Feel 
+free to use it or improve it.</p>
+
+<h3>Quick Start</h3>
+-----------
+<p>Simply include the MessageBoard framework in your Frameworks directory and include MessageBoard.j</p>
+
+@import <MessageBoard/MessageBoard.j>
+
+<h3>Documentation</h3>
+<p>To generate the documentation execute the following :</p>
+
+# doxygen MessageBoard.doxygen
