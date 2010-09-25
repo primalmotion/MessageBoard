@@ -25,8 +25,8 @@
 */
 @implementation TNMessageBoard : TNStackView
 {
-    CPArray     _messageDicts;
-    CPArray     _messageViews;
+    CPArray     messageDicts;
+    CPArray     messageViews;
 }
 
 /*! initialize the TNMessageBoard
@@ -37,10 +37,10 @@
 {
     if (self = [super initWithFrame:aFrame])
     {
-        _messageDicts   = [CPArray array];
-        _messageViews   = [CPArray array];
+        messageDicts   = [CPArray array];
+        messageViews   = [CPArray array];
 
-        [self setDataSource:_messageViews];
+        [self setDataSource:messageViews];
     }
 
     return self;
@@ -61,9 +61,9 @@
                                                  timestamp:aDate
                                            backgroundColor:aColor];
 
-    [_messageViews addObject:messageView];
+    [messageViews addObject:messageView];
 
-    [_messageDicts addObject:[CPDictionary dictionaryWithObjectsAndKeys:anAuthor, @"author", aMessage, @"message", aDate, @"date", aColor, @"color"]];
+    [messageDicts addObject:[CPDictionary dictionaryWithObjectsAndKeys:anAuthor, @"author", aMessage, @"message", aDate, @"date", aColor, @"color"]];
 
     [self reload];
 }
