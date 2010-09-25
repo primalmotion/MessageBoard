@@ -35,7 +35,7 @@
 */
 - (id)initWithFrame:(CPRect)aFrame
 {
-    if(self = [super initWithFrame:aFrame])
+    if (self = [super initWithFrame:aFrame])
     {
         _messageDicts   = [CPArray array];
         _messageViews   = [CPArray array];
