@@ -73,7 +73,7 @@
     But I don't want to modifiy this in archipel.
     You should not use it and directly call removeAllViews
 */
-- (IBAction)removeAllMessages:(id)aSender
+- (@action)removeAllMessages:(id)aSender
 {
     [self removeAllViews:aSender];
 }
