@@ -27,10 +27,10 @@
     of each subviews. The subview can then, if needed adjust its height, it's content
     call it's mom or whatever
 */
-@implementation TNStackView: CPView
+@implementation TNStackView : CPView
 {
-    CPArray     dataSource     @accessors(property=dataSource);
-    int         padding        @accessors(property=padding);
+    CPArray     dataSource     @accessors;
+    int         padding        @accessors;
     BOOL        reversed       @accessors(getter=isReversed, setter=setReversed:);
     CPArray     stackedViews;
 }
@@ -67,11 +67,9 @@
         position.origin.x = padding;
     }
     else
-    {
         position = CGRectMake(padding, padding, [self bounds].size.width - (padding * 2), 0);
-    }
 
-    return position
+    return position;
 }
 
 /*! reload the content of the datasource
@@ -114,9 +112,7 @@
         [currentView setFrame:position];
 
         if ([currentView respondsToSelector:@selector(layout)])
-        {
             [currentView layout];
-        }
 
         [self addSubview:currentView];
         [stackedViews addObject:currentView];
