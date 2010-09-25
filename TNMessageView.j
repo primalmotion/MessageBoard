@@ -98,9 +98,9 @@
 */
 - (void)layout
 {
-    var frame           = [self frame];
-    var messageHeight   = [_message sizeWithFont:[CPFont systemFontOfSize:12] inWidth:CGRectGetWidth(frame)].height;
-    var messageFrame    = [_fieldMessage frame];
+    var frame           = [self frame],
+        messageHeight   = [_message sizeWithFont:[CPFont systemFontOfSize:12] inWidth:CGRectGetWidth(frame)].height,
+        messageFrame    = [_fieldMessage frame];
 
     messageFrame.size.height = messageHeight + 10;
     frame.size.height =  messageFrame.size.height + 30;
