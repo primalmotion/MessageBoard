@@ -103,7 +103,7 @@
 
     stackViewFrame.size.height = 0;
 
-    for(var i = 0; i < [workingArray count]; i++)
+    for (var i = 0; i < [workingArray count]; i++)
     {
         var currentView = [workingArray objectAtIndex:i],
             position    = [self _nextPosition];
