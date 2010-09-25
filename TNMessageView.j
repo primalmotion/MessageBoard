@@ -66,7 +66,7 @@
         [_fieldAuthor setAutoresizingMask:CPViewWidthSizable];
 
         _fieldMessage = [[CPTextField alloc] initWithFrame:CGRectMake(10,30, CGRectGetWidth(aFrame) - 20, 50)];
-        [_fieldMessage setAutoresizingMask:CPViewWidthSizable|CPViewHeightSizable];
+        [_fieldMessage setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
         [_fieldMessage setLineBreakMode:CPLineBreakByWordWrapping];
         [_fieldMessage setAlignment:CPJustifiedTextAlignment];
 
