@@ -47,6 +47,7 @@
         stackedViews   = [CPArray array];
         padding        = 0;
         reversed       = NO;
+        [self setAutoresizingMask:CPViewWidthSizable];
     }
 
     return self;
