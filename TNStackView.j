@@ -56,8 +56,8 @@
 */
 - (CPRect)_nextPosition
 {
-    var lastStackedView = [_stackedViews lastObject];
-    var position;
+    var lastStackedView = [_stackedViews lastObject],
+        position;
 
     if (lastStackedView)
     {
@@ -98,15 +98,15 @@
 */
 - (void)layout
 {
-    var stackViewFrame  = [self frame];
-    var workingArray    = _reversed ? [_dataSource copy].reverse() : _dataSource;
+    var stackViewFrame  = [self frame],
+        workingArray    = _reversed ? [_dataSource copy].reverse() : _dataSource;
 
     stackViewFrame.size.height = 0;
 
     for(var i = 0; i < [workingArray count]; i++)
     {
-        var currentView     = [workingArray objectAtIndex:i];
-        var position        = [self _nextPosition];
+        var currentView = [workingArray objectAtIndex:i],
+            position    = [self _nextPosition];
 
         position.size.height = [currentView frameSize].height;
         [currentView setAutoresizingMask:CPViewWidthSizable];
