@@ -29,10 +29,10 @@
 */
 @implementation TNStackView: CPView
 {
-    CPArray     _dataSource     @accessors(property=dataSource);
-    int         _padding        @accessors(property=padding);
-    BOOL        _reversed       @accessors(getter=isReversed, setter=setReversed:);
-    CPArray     _stackedViews;
+    CPArray     dataSource     @accessors(property=dataSource);
+    int         padding        @accessors(property=padding);
+    BOOL        reversed       @accessors(getter=isReversed, setter=setReversed:);
+    CPArray     stackedViews;
 }
 
 /*! initialize the TNStackView
@@ -43,10 +43,10 @@
 {
     if (self = [super initWithFrame:aFrame])
     {
-        _dataSource     = [CPArray array];
-        _stackedViews   = [CPArray array];
-        _padding        = 0;
-        _reversed       = NO;
+        dataSource     = [CPArray array];
+        stackedViews   = [CPArray array];
+        padding        = 0;
+        reversed       = NO;
     }
 
     return self;
@@ -54,20 +54,20 @@
 
 /*! @ignore
 */
-- (CPRect)_nextPosition
+- (CPRect)nextPosition
 {
-    var lastStackedView = [_stackedViews lastObject],
+    var lastStackedView = [stackedViews lastObject],
         position;
 
     if (lastStackedView)
     {
         position = [lastStackedView frame];
-        position.origin.y = position.origin.y + position.size.height + _padding;
-        position.origin.x = _padding;
+        position.origin.y = position.origin.y + position.size.height + padding;
+        position.origin.x = padding;
     }
     else
     {
-        position = CGRectMake(_padding, _padding, [self bounds].size.width - (_padding * 2), 0);
+        position = CGRectMake(padding, padding, [self bounds].size.width - (padding * 2), 0);
     }
 
     return position
@@ -82,15 +82,15 @@
     frame.size.height = 0;
     [self setFrame:frame];
 
-    for (var i = 0; i < [_dataSource count]; i++)
+    for (var i = 0; i < [dataSource count]; i++)
     {
-        var view = [_dataSource objectAtIndex:i];
+        var view = [dataSource objectAtIndex:i];
 
         if ([view superview])
             [view removeFromSuperview];
     }
 
-    [_stackedViews removeAllObjects];
+    [stackedViews removeAllObjects];
     [self layout];
 }
 
@@ -99,14 +99,14 @@
 - (void)layout
 {
     var stackViewFrame  = [self frame],
-        workingArray    = _reversed ? [_dataSource copy].reverse() : _dataSource;
+        workingArray    = reversed ? [dataSource copy].reverse() : dataSource;
 
     stackViewFrame.size.height = 0;
 
     for (var i = 0; i < [workingArray count]; i++)
     {
         var currentView = [workingArray objectAtIndex:i],
-            position    = [self _nextPosition];
+            position    = [self nextPosition];
 
         position.size.height = [currentView frameSize].height;
         [currentView setAutoresizingMask:CPViewWidthSizable];
@@ -118,12 +118,12 @@
         }
 
         [self addSubview:currentView];
-        [_stackedViews addObject:currentView];
+        [stackedViews addObject:currentView];
 
-        stackViewFrame.size.height += [currentView frame].size.height + _padding;
+        stackViewFrame.size.height += [currentView frame].size.height + padding;
     }
 
-    stackViewFrame.size.height += _padding;
+    stackViewFrame.size.height += padding;
     [self setFrame:stackViewFrame];
 }
 
@@ -131,7 +131,7 @@
 */
 - (@action)removeAllViews:(id)aSender
 {
-    [_dataSource removeAllObjects];
+    [dataSource removeAllObjects];
 
     [self reload];
 }
@@ -140,7 +140,7 @@
 */
 - (@action)reverse:(id)sender
 {
-    _reversed = !_reversed;
+    reversed = !reversed;
 
     [self reload];
 }

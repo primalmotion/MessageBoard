@@ -23,15 +23,15 @@
 */
 @implementation TNMessageView : CPView
 {
-    CPTextField             _fieldAuthor;
-    CPTextField             _fieldTimestamp;
-    LPMultiLineTextField    _fieldMessage;
+    CPTextField             fieldAuthor;
+    CPTextField             fieldTimestamp;
+    LPMultiLineTextField    fieldMessage;
 
-    CPColor                 _bgColor;
-    CPString                _author;
-    CPString                _message;
-    CPString                _subject;
-    CPString                _timestamp;
+    CPColor                 bgColor;
+    CPString                author;
+    CPString                message;
+    CPString                subject;
+    CPString                timestamp;
 }
 
 /*! instanciate a TNMessageView
@@ -52,42 +52,42 @@
 {
     if (self = [super initWithFrame:aFrame])
     {
-        _author     = anAuthor;
-        _subject    = aSubject;
-        _message    = aMessage;
-        _timestamp  = aTimestamp;
-        _bgColor    = aColor;
+        author     = anAuthor;
+        subject    = aSubject;
+        message    = aMessage;
+        timestamp  = aTimestamp;
+        bgColor    = aColor;
 
         [self setAutoresizingMask:CPViewWidthSizable];
 
-        _fieldAuthor = [[CPTextField alloc] initWithFrame:CGRectMake(10,10, CGRectGetWidth(aFrame) - 10, 20)];
-        [_fieldAuthor setFont:[CPFont boldSystemFontOfSize:12]];
-        [_fieldAuthor setTextColor:[CPColor grayColor]];
-        [_fieldAuthor setAutoresizingMask:CPViewWidthSizable];
+        fieldAuthor = [[CPTextField alloc] initWithFrame:CGRectMake(10,10, CGRectGetWidth(aFrame) - 10, 20)];
+        [fieldAuthor setFont:[CPFont boldSystemFontOfSize:12]];
+        [fieldAuthor setTextColor:[CPColor grayColor]];
+        [fieldAuthor setAutoresizingMask:CPViewWidthSizable];
 
-        _fieldMessage = [[CPTextField alloc] initWithFrame:CGRectMake(10,30, CGRectGetWidth(aFrame) - 20, 50)];
-        [_fieldMessage setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-        [_fieldMessage setLineBreakMode:CPLineBreakByWordWrapping];
-        [_fieldMessage setAlignment:CPJustifiedTextAlignment];
+        fieldMessage = [[CPTextField alloc] initWithFrame:CGRectMake(10,30, CGRectGetWidth(aFrame) - 20, 50)];
+        [fieldMessage setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+        [fieldMessage setLineBreakMode:CPLineBreakByWordWrapping];
+        [fieldMessage setAlignment:CPJustifiedTextAlignment];
 
-        _fieldTimestamp = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetWidth(aFrame) - 200, 10, 190, 20)];
-        [_fieldTimestamp setAutoresizingMask:CPViewMinXMargin];
-        [_fieldTimestamp setValue:[CPColor colorWithHexString:@"f2f0e4"] forThemeAttribute:@"text-shadow-color" inState:CPThemeStateNormal];
-        [_fieldTimestamp setValue:[CPFont systemFontOfSize:9.0] forThemeAttribute:@"font" inState:CPThemeStateNormal];
-        [_fieldTimestamp setValue:[CPColor colorWithHexString:@"808080"] forThemeAttribute:@"text-color" inState:CPThemeStateNormal];
-        [_fieldTimestamp setAlignment:CPRightTextAlignment];
+        fieldTimestamp = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetWidth(aFrame) - 200, 10, 190, 20)];
+        [fieldTimestamp setAutoresizingMask:CPViewMinXMargin];
+        [fieldTimestamp setValue:[CPColor colorWithHexString:@"f2f0e4"] forThemeAttribute:@"text-shadow-color" inState:CPThemeStateNormal];
+        [fieldTimestamp setValue:[CPFont systemFontOfSize:9.0] forThemeAttribute:@"font" inState:CPThemeStateNormal];
+        [fieldTimestamp setValue:[CPColor colorWithHexString:@"808080"] forThemeAttribute:@"text-color" inState:CPThemeStateNormal];
+        [fieldTimestamp setAlignment:CPRightTextAlignment];
 
-        [self addSubview:_fieldAuthor];
-        [self addSubview:_fieldMessage];
-        [self addSubview:_fieldTimestamp];
+        [self addSubview:fieldAuthor];
+        [self addSubview:fieldMessage];
+        [self addSubview:fieldTimestamp];
 
-        [_fieldAuthor setStringValue:_author];
-        [_fieldMessage setStringValue:_message];
-        [_fieldTimestamp setStringValue:_timestamp];
+        [fieldAuthor setStringValue:author];
+        [fieldMessage setStringValue:message];
+        [fieldTimestamp setStringValue:timestamp];
 
-        [self setBackgroundColor:_bgColor];
+        [self setBackgroundColor:bgColor];
 
-        [_fieldMessage setStringValue:_message];
+        [fieldMessage setStringValue:message];
     }
 
     return self;
@@ -99,15 +99,15 @@
 - (void)layout
 {
     var frame           = [self frame],
-        messageHeight   = [_message sizeWithFont:[CPFont systemFontOfSize:12] inWidth:CGRectGetWidth(frame)].height,
-        messageFrame    = [_fieldMessage frame];
+        messageHeight   = [message sizeWithFont:[CPFont systemFontOfSize:12] inWidth:CGRectGetWidth(frame)].height,
+        messageFrame    = [fieldMessage frame];
 
     messageFrame.size.height = messageHeight + 10;
     frame.size.height =  messageFrame.size.height + 30;
 
     [self setFrame:frame];
-    [_fieldMessage setFrame:messageFrame];
-    [_fieldMessage setSelectable:YES];
+    [fieldMessage setFrame:messageFrame];
+    [fieldMessage setSelectable:YES];
 }
 
 @end
