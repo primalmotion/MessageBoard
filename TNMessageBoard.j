@@ -52,7 +52,7 @@
     @param aColor a CPColor that will be used as background
     @param aDate the date of the message
 */
-- (void)addMessage:(CPString)aMessage from:(CPString)anAuthor color:(CPColor)aColor date:(CPDate)aDate
+- (void)addMessage:(CPString)aMessage from:(CPString)anAuthor date:(CPDate)aDate color:(CPColor)aColor
 {
     var messageView = [[TNMessageView alloc] initWithFrame:CPRectMake(0, 0, 100, 100)
                                                     author:anAuthor
