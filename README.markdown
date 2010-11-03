@@ -33,3 +33,8 @@ You can see a demo application here: [Demo](http://github.com/primalmotion/Messa
 To generate the documentation execute the following :
 
     # doxygen MessageBoard.doxygen
+
+
+## Help / Suggestion
+
+You can reach us at irc://irc.freenode.net/#archipel
