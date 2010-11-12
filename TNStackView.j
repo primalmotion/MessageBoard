@@ -66,11 +66,11 @@
     if (lastStackedView)
     {
         position = [lastStackedView frame];
-        position.origin.y = position.origin.y + position.size.height + _padding;
+        position.origin.y = CPRectGetMaxY(position) + _padding;
         position.origin.x = _padding;
     }
     else
-        position = CGRectMake(_padding, _padding, [self bounds].size.width - (_padding * 2), 0);
+        position = CGRectMake(_padding, _padding, CPRectGetWidth([self bounds]) - (_padding * 2), 0);
 
     return position
 }
