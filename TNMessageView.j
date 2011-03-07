@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -29,11 +29,14 @@
     CPTextField             _fieldTimestamp;
     LPMultiLineTextField    _fieldMessage;
 
+    CPImageView             _imageViewAvatar;
+    CPImage                 _imageDefaultAvatar;
     CPColor                 _bgColor;
     CPString                _author;
     CPString                _message;
     CPString                _subject;
     CPString                _timestamp;
+    CPView                  _viewContainer;
 }
 
 /*! instanciate a TNMessageView
@@ -45,12 +48,38 @@
 
     @return initialized view
 */
-- (void)initWithFrame:aFrame
+- (void)initWithFrame:(CPRect)aFrame
                author:(CPString)anAuthor
               subject:(CPString)aSubject
               message:(CPString)aMessage
             timestamp:(CPString)aTimestamp
       backgroundColor:(CPColor)aColor
+{
+    return [self initWithFrame:aFrame
+                   author:anAuthor
+                  subject:aSubject
+                  message:aMessage
+                timestamp:aTimestamp
+          backgroundColor:aColor
+                   avatar:nil];
+}
+
+/*! instanciate a TNMessageView
+    @param anAuthor sender of the message
+    @param aSubject subject of the message (not used)
+    @param aMessage the content of the message
+    @param aTimestamp the date of the message
+    @param aColor a CPColor that will be used as background
+    @param anAvatar CPImage containg an avatar if nil, it will be the default one
+    @return initialized view
+*/
+- (void)initWithFrame:(CPRect)aFrame
+               author:(CPString)anAuthor
+              subject:(CPString)aSubject
+              message:(CPString)aMessage
+            timestamp:(CPString)aTimestamp
+      backgroundColor:(CPColor)aColor
+               avatar:(CPImage)anAvatar
 {
     if (self = [super initWithFrame:aFrame])
     {
@@ -62,32 +91,60 @@
 
         [self setAutoresizingMask:CPViewWidthSizable];
 
-        _fieldAuthor = [[CPTextField alloc] initWithFrame:CGRectMake(10,10, CGRectGetWidth(aFrame) - 10, 20)];
+        var bundle = [CPBundle bundleForClass:[self class]];
+        if (!anAvatar)
+            _imageDefaultAvatar = [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"user-unknown.png"] size:CPSizeMake(36, 36)];
+        else
+            _imageDefaultAvatar = anAvatar;
+
+        _imageViewAvatar = [[CPImageView alloc] initWithFrame:CGRectMake(6, 50, 36, 36)];
+        [_imageViewAvatar setImageScaling:CPScaleProportionally];
+        [_imageViewAvatar setAutoresizingMask:CPViewMinYMargin];
+        [_imageViewAvatar setImage:_imageDefaultAvatar];
+
+        _viewContainer = [[CPView alloc] initWithFrame:CGRectMake(50, 10, CGRectGetWidth(aFrame) - 60, 80)]
+        [_viewContainer setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+
+        var backgroundImage = [CPColor colorWithPatternImage:[[CPNinePartImage alloc] initWithImageSlices:[
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/1.png"] size:CPSizeMake(24.0, 14.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/2.png"] size:CPSizeMake(1.0, 14.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/3.png"] size:CPSizeMake(15.0, 14.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/4.png"] size:CPSizeMake(24.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/5.png"] size:CPSizeMake(1.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/6.png"] size:CPSizeMake(15.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/7.png"] size:CPSizeMake(24.0, 16.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/8.png"] size:CPSizeMake(1.0, 16.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/9.png"] size:CPSizeMake(15.0, 16.0)],
+        ]]];
+
+        [_viewContainer setBackgroundColor:backgroundImage];
+
+        _fieldAuthor = [[CPTextField alloc] initWithFrame:CGRectMake(20, 10, CGRectGetWidth([_viewContainer frame]) - 30, 20)];
         [_fieldAuthor setFont:[CPFont boldSystemFontOfSize:12]];
         [_fieldAuthor setTextColor:[CPColor grayColor]];
         [_fieldAuthor setAutoresizingMask:CPViewWidthSizable];
 
-        _fieldMessage = [[CPTextField alloc] initWithFrame:CGRectMake(10,30, CGRectGetWidth(aFrame) - 20, 50)];
-        [_fieldMessage setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+        _fieldMessage = [[CPTextField alloc] initWithFrame:CGRectMake(20, 30, CGRectGetWidth([_viewContainer frame]) - 30 , CGRectGetHeight([_viewContainer frame]))];
+        [_fieldMessage setAutoresizingMask:CPViewWidthSizable];
         [_fieldMessage setLineBreakMode:CPLineBreakByWordWrapping];
         [_fieldMessage setAlignment:CPJustifiedTextAlignment];
 
-        _fieldTimestamp = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetWidth(aFrame) - 200, 10, 190, 20)];
+        _fieldTimestamp = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetWidth([_viewContainer frame]) - 200, 10, 190, 20)];
         [_fieldTimestamp setAutoresizingMask:CPViewMinXMargin];
         [_fieldTimestamp setValue:[CPColor colorWithHexString:@"f2f0e4"] forThemeAttribute:@"text-shadow-color" inState:CPThemeStateNormal];
         [_fieldTimestamp setValue:[CPFont systemFontOfSize:9.0] forThemeAttribute:@"font" inState:CPThemeStateNormal];
         [_fieldTimestamp setValue:[CPColor colorWithHexString:@"808080"] forThemeAttribute:@"text-color" inState:CPThemeStateNormal];
         [_fieldTimestamp setAlignment:CPRightTextAlignment];
 
-        [self addSubview:_fieldAuthor];
-        [self addSubview:_fieldMessage];
-        [self addSubview:_fieldTimestamp];
+        [_viewContainer addSubview:_fieldAuthor];
+        [_viewContainer addSubview:_fieldMessage];
+        [_viewContainer addSubview:_fieldTimestamp];
+        [self addSubview:_imageViewAvatar];
+        [self addSubview:_viewContainer];
 
         [_fieldAuthor setStringValue:_author];
         [_fieldMessage setStringValue:_message];
         [_fieldTimestamp setStringValue:_timestamp];
-
-        [self setBackgroundColor:_bgColor];
 
         [_fieldMessage setStringValue:_message];
     }
@@ -101,11 +158,12 @@
 - (void)layout
 {
     var frame           = [self frame],
-        messageHeight   = [_message sizeWithFont:[CPFont systemFontOfSize:12] inWidth:CGRectGetWidth(frame)].height,
-        messageFrame    = [_fieldMessage frame];
+        messageHeight   = [_message sizeWithFont:[CPFont systemFontOfSize:12] inWidth:CGRectGetWidth([_fieldMessage frame])].height,
+        messageFrame    = [_fieldMessage frame],
+        containerFrame  = [_viewContainer frame];
 
     messageFrame.size.height = messageHeight + 10;
-    frame.size.height =  messageFrame.size.height + 30;
+    frame.size.height =  containerFrame.origin.y + messageFrame.size.height + messageFrame.origin.y + 10;
 
     [self setFrame:frame];
     [_fieldMessage setFrame:messageFrame];

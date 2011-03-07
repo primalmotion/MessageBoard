@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -48,6 +48,7 @@
     return self;
 }
 
+
 /*! stack a new message
     @param aMessage the content of the message
     @param anAuthor sender of the message
@@ -56,12 +57,25 @@
 */
 - (void)addMessage:(CPString)aMessage from:(CPString)anAuthor date:(CPDate)aDate color:(CPColor)aColor
 {
+    [self addMessage:aMessage from:anAuthor date:aDate color:aColor avatar:nil];
+}
+
+/*! stack a new message
+    @param aMessage the content of the message
+    @param anAuthor sender of the message
+    @param aColor a CPColor that will be used as background
+    @param aDate the date of the message
+    @param anAvatar CPImage containing anAvatar
+*/
+- (void)addMessage:(CPString)aMessage from:(CPString)anAuthor date:(CPDate)aDate color:(CPColor)aColor avatar:(CPImage)anAvatar
+{
     var messageView = [[TNMessageView alloc] initWithFrame:CPRectMake(0, 0, 100, 100)
                                                     author:anAuthor
                                                    subject:@"Subject"
                                                    message:aMessage
                                                  timestamp:aDate
-                                           backgroundColor:aColor];
+                                           backgroundColor:aColor
+                                                    avatar:anAvatar];
 
     [_messageViews addObject:messageView];
 
