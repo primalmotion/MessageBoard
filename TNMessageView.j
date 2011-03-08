@@ -25,8 +25,9 @@
 TNMessageViewAvatarPositionRight    = @"TNMessageViewAvatarPositionRight";
 TNMessageViewAvatarPositionLeft     = @"TNMessageViewAvatarPositionLeft";
 
-TNMessageViewBubbleColorNormal      = @"TNMessageViewBubbleColorNormal";
-TNMessageViewBubbleColorAlt         = @"TNMessageViewBubbleColorAlt";
+TNMessageViewBubbleColorNormal      = 1;
+TNMessageViewBubbleColorAlt         = 2;
+TNMessageViewBubbleColorNotice      = 3;
 
 /*! CPView that contains information to display chat information
 */
@@ -123,7 +124,23 @@ TNMessageViewBubbleColorAlt         = @"TNMessageViewBubbleColorAlt";
         [_imageViewAvatar setImage:_imageDefaultAvatar];
 
         var backgroundImage,
-            backgroundFolder = (_bgColor == TNMessageViewBubbleColorNormal) ? @"Bubble" : @"BubbleAlt";
+            backgroundFolder;
+
+        switch (_bgColor)
+        {
+            case TNMessageViewBubbleColorNormal:
+                backgroundFolder = @"Bubble";
+                break;
+
+            case TNMessageViewBubbleColorAlt:
+                backgroundFolder = @"BubbleAlt";
+                break
+
+            case TNMessageViewBubbleColorNotice:
+                backgroundFolder = @"BubbleNotice";
+                break
+        }
+
         if (_position == TNMessageViewAvatarPositionLeft)
             backgroundImage = [CPColor colorWithPatternImage:[[CPNinePartImage alloc] initWithImageSlices:[
                 [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/1.png"] size:CPSizeMake(24.0, 14.0)],
