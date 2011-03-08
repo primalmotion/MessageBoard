@@ -131,6 +131,9 @@
 */
 - (IBAction)removeAllViews:(id)aSender
 {
+    for (var i = 0; i < [_dataSource count]; i++)
+        [[_dataSource objectAtIndex:i] removeFromSuperview];
+
     [_dataSource removeAllObjects];
 
     [self reload];
