@@ -21,6 +21,13 @@
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
 
+
+TNMessageViewAvatarPositionRight    = @"TNMessageViewAvatarPositionRight";
+TNMessageViewAvatarPositionLeft     = @"TNMessageViewAvatarPositionLeft";
+
+TNMessageViewBubbleColorNormal      = @"TNMessageViewBubbleColorNormal";
+TNMessageViewBubbleColorAlt         = @"TNMessageViewBubbleColorAlt";
+
 /*! CPView that contains information to display chat information
 */
 @implementation TNMessageView : CPView
@@ -31,22 +38,17 @@
 
     CPImageView             _imageViewAvatar;
     CPImage                 _imageDefaultAvatar;
-    CPColor                 _bgColor;
+    int                     _bgColor;
     CPString                _author;
     CPString                _message;
     CPString                _subject;
     CPString                _timestamp;
     CPView                  _viewContainer;
+    int                     _position;
 }
 
-/*! instanciate a TNMessageView
-    @param anAuthor sender of the message
-    @param aSubject subject of the message (not used)
-    @param aMessage the content of the message
-    @param aTimestamp the date of the message
-    @param aColor a CPColor that will be used as background
-
-    @return initialized view
+/*!
+    compatibility
 */
 - (void)initWithFrame:(CPRect)aFrame
                author:(CPString)anAuthor
@@ -60,8 +62,9 @@
                   subject:aSubject
                   message:aMessage
                 timestamp:aTimestamp
-          backgroundColor:aColor
-                   avatar:nil];
+              bubbleColor:TNMessageViewBubbleColorNormal
+                   avatar:nil
+                 position:nil];
 }
 
 /*! instanciate a TNMessageView
@@ -78,8 +81,9 @@
               subject:(CPString)aSubject
               message:(CPString)aMessage
             timestamp:(CPString)aTimestamp
-      backgroundColor:(CPColor)aColor
+          bubbleColor:(int)aColor
                avatar:(CPImage)anAvatar
+              position:(int)position
 {
     if (self = [super initWithFrame:aFrame])
     {
@@ -87,35 +91,63 @@
         _subject    = aSubject;
         _message    = aMessage;
         _timestamp  = aTimestamp;
-        _bgColor    = aColor;
+        _bgColor    = aColor ? aColor : TNMessageViewBubbleColorNormal;
 
         [self setAutoresizingMask:CPViewWidthSizable];
 
         var bundle = [CPBundle bundleForClass:[self class]];
-        if (!anAvatar)
-            _imageDefaultAvatar = [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"user-unknown.png"] size:CPSizeMake(36, 36)];
+
+        _imageDefaultAvatar = anAvatar ? anAvatar : [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"user-unknown.png"] size:CPSizeMake(36, 36)];
+
+        _position = position ? position : TNMessageViewAvatarPositionLeft;
+
+        if (_position == TNMessageViewAvatarPositionLeft)
+            _viewContainer = [[CPView alloc] initWithFrame:CGRectMake(50, 10, CGRectGetWidth(aFrame) - 60, 80)]
         else
-            _imageDefaultAvatar = anAvatar;
-
-        _imageViewAvatar = [[CPImageView alloc] initWithFrame:CGRectMake(6, 50, 36, 36)];
-        [_imageViewAvatar setImageScaling:CPScaleProportionally];
-        [_imageViewAvatar setAutoresizingMask:CPViewMinYMargin];
-        [_imageViewAvatar setImage:_imageDefaultAvatar];
-
-        _viewContainer = [[CPView alloc] initWithFrame:CGRectMake(50, 10, CGRectGetWidth(aFrame) - 60, 80)]
+            _viewContainer = [[CPView alloc] initWithFrame:CGRectMake(10, 10, CGRectGetWidth(aFrame) - 60, 80)]
         [_viewContainer setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
 
-        var backgroundImage = [CPColor colorWithPatternImage:[[CPNinePartImage alloc] initWithImageSlices:[
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/1.png"] size:CPSizeMake(24.0, 14.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/2.png"] size:CPSizeMake(1.0, 14.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/3.png"] size:CPSizeMake(15.0, 14.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/4.png"] size:CPSizeMake(24.0, 1.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/5.png"] size:CPSizeMake(1.0, 1.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/6.png"] size:CPSizeMake(15.0, 1.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/7.png"] size:CPSizeMake(24.0, 16.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/8.png"] size:CPSizeMake(1.0, 16.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"Bubble/9.png"] size:CPSizeMake(15.0, 16.0)],
-        ]]];
+
+        if (_position == TNMessageViewAvatarPositionLeft)
+        {
+            _imageViewAvatar = [[CPImageView alloc] initWithFrame:CGRectMake(6, CGRectGetHeight(aFrame) - 46, 36, 36)];
+            [_imageViewAvatar setAutoresizingMask:CPViewMinYMargin];
+        }
+        else
+        {
+            _imageViewAvatar = [[CPImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(aFrame) - 46, CGRectGetHeight(aFrame) - 46 , 36, 36)];
+            [_imageViewAvatar setAutoresizingMask:CPViewMinXMargin | CPViewMinYMargin];
+        }
+        [_imageViewAvatar setImageScaling:CPScaleProportionally];
+
+        [_imageViewAvatar setImage:_imageDefaultAvatar];
+
+        var backgroundImage,
+            backgroundFolder = (_bgColor == TNMessageViewBubbleColorNormal) ? @"Bubble" : @"BubbleAlt";
+        if (_position == TNMessageViewAvatarPositionLeft)
+            backgroundImage = [CPColor colorWithPatternImage:[[CPNinePartImage alloc] initWithImageSlices:[
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/1.png"] size:CPSizeMake(24.0, 14.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/2.png"] size:CPSizeMake(1.0, 14.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/3.png"] size:CPSizeMake(24.0, 14.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/4.png"] size:CPSizeMake(24.0, 1.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/5.png"] size:CPSizeMake(1.0, 1.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/6.png"] size:CPSizeMake(24.0, 1.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/7.png"] size:CPSizeMake(24.0, 16.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/8.png"] size:CPSizeMake(1.0, 16.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/9.png"] size:CPSizeMake(24.0, 16.0)],
+            ]]];
+        else
+            backgroundImage = [CPColor colorWithPatternImage:[[CPNinePartImage alloc] initWithImageSlices:[
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/1.png"] size:CPSizeMake(24.0, 14.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/2.png"] size:CPSizeMake(1.0, 14.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/3.png"] size:CPSizeMake(24.0, 14.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/4.png"] size:CPSizeMake(24.0, 1.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/5.png"] size:CPSizeMake(1.0, 1.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/6.png"] size:CPSizeMake(24.0, 1.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/7-alt.png"] size:CPSizeMake(24.0, 16.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/8.png"] size:CPSizeMake(1.0, 16.0)],
+                [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:backgroundFolder + @"/9-alt.png"] size:CPSizeMake(24.0, 16.0)],
+            ]]];
 
         [_viewContainer setBackgroundColor:backgroundImage];
 
@@ -129,7 +161,7 @@
         [_fieldMessage setLineBreakMode:CPLineBreakByWordWrapping];
         [_fieldMessage setAlignment:CPJustifiedTextAlignment];
 
-        _fieldTimestamp = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetWidth([_viewContainer frame]) - 200, 10, 190, 20)];
+        _fieldTimestamp = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetWidth([_viewContainer frame]) - 210, 10, 190, 20)];
         [_fieldTimestamp setAutoresizingMask:CPViewMinXMargin];
         [_fieldTimestamp setValue:[CPColor colorWithHexString:@"f2f0e4"] forThemeAttribute:@"text-shadow-color" inState:CPThemeStateNormal];
         [_fieldTimestamp setValue:[CPFont systemFontOfSize:9.0] forThemeAttribute:@"font" inState:CPThemeStateNormal];

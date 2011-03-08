@@ -55,9 +55,9 @@
     @param aColor a CPColor that will be used as background
     @param aDate the date of the message
 */
-- (void)addMessage:(CPString)aMessage from:(CPString)anAuthor date:(CPDate)aDate color:(CPColor)aColor
+- (void)addMessage:(CPString)aMessage from:(CPString)anAuthor date:(CPDate)aDate color:(int)aColor
 {
-    [self addMessage:aMessage from:anAuthor date:aDate color:aColor avatar:nil];
+    [self addMessage:aMessage from:anAuthor date:aDate color:aColor avatar:nil position:nil];
 }
 
 /*! stack a new message
@@ -67,15 +67,16 @@
     @param aDate the date of the message
     @param anAvatar CPImage containing anAvatar
 */
-- (void)addMessage:(CPString)aMessage from:(CPString)anAuthor date:(CPDate)aDate color:(CPColor)aColor avatar:(CPImage)anAvatar
+- (void)addMessage:(CPString)aMessage from:(CPString)anAuthor date:(CPDate)aDate color:(int)aColor avatar:(CPImage)anAvatar position:(int)aPosition
 {
     var messageView = [[TNMessageView alloc] initWithFrame:CPRectMake(0, 0, 100, 100)
                                                     author:anAuthor
                                                    subject:@"Subject"
                                                    message:aMessage
                                                  timestamp:aDate
-                                           backgroundColor:aColor
-                                                    avatar:anAvatar];
+                                               bubbleColor:aColor
+                                                    avatar:anAvatar
+                                                  position:aPosition];
 
     [_messageViews addObject:messageView];
 
