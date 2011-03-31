@@ -19,7 +19,12 @@
  */
 
 @import <Foundation/Foundation.j>
-@import <AppKit/AppKit.j>
+
+@import <AppKit/CPColor.j>
+@import <AppKit/CPImage.j>
+@import <AppKit/CPImageView.j>
+@import <AppKit/CPImageView.j>
+@import <AppKit/CPTextField.j>
 
 
 TNMessageViewAvatarPositionRight    = @"TNMessageViewAvatarPositionRight";

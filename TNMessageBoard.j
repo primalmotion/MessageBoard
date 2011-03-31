@@ -19,9 +19,10 @@
  */
 
 @import <Foundation/Foundation.j>
-@import <AppKit/AppKit.j>
+
 @import "TNMessageView.j";
 @import "TNStackView.j";
+
 
 /*! Subclass of TNStackView that is specialized to stacks TNMessageViews
 */

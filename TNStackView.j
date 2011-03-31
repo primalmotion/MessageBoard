@@ -19,7 +19,10 @@
  */
 
 @import <Foundation/Foundation.j>
-@import <AppKit/AppKit.j>
+
+@import <AppKit/CPView.j>
+
+
 
 /*! This class allows to create a view that can stack  different subviews.
     It will resize if in width to fill completely the view, but keeps the height
