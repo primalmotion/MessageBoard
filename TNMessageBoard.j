@@ -1,5 +1,5 @@
 /*
- * TNMessageView.j
+ * TNMessageBoard.j
  *
  * Copyright (C) 2010  Antoine Mercadal <antoine.mercadal@inframonde.eu>
  *
