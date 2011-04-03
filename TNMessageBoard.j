@@ -25,6 +25,13 @@
 
 @import "TNMessageView.j"
 
+
+
+/*! @ingroup messageboard
+    This class allows to stack TNMessageView in a variable
+    row height CPTableView with shortcuts. Result will display 
+    a sort of chat view
+*/
 @implementation TNMessageBoard : CPTableView
 {
     CPArray         _messages;

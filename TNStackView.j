@@ -24,7 +24,8 @@
 
 
 
-/*! This class allows to create a view that can stack  different subviews.
+/*! @ingroup messageboard
+    This class allows to create a view that can stack  different subviews.
     It will resize if in width to fill completely the view, but keeps the height
     It is also possible to set padding between views and reverse it.
 

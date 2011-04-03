@@ -35,7 +35,8 @@ TNMessageViewBubbleColorAlt         = 2;
 TNMessageViewBubbleColorNotice      = 3;
 
 
-/*! CPView that contains information to display chat information
+/*! @ingroup messageboard
+    CPView that contains information to display chat information
 */
 @implementation TNMessageView : CPView
 {
