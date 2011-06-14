@@ -105,10 +105,12 @@ TNMessageViewBubbleColorNotice      = 3;
         [_fieldAuthor setFont:[CPFont boldSystemFontOfSize:12]];
         [_fieldAuthor setTextColor:[CPColor grayColor]];
         [_fieldAuthor setAutoresizingMask:CPViewWidthSizable];
+        [_fieldAuthor setSelectable:YES];
 
         _fieldMessage = [[CPTextField alloc] initWithFrame:CGRectMake(20, 30, CGRectGetWidth([_viewContainer frame]) - 40 , CGRectGetHeight([_viewContainer frame]))];
         [_fieldMessage setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
         [_fieldMessage setLineBreakMode:CPLineBreakByWordWrapping];
+        [_fieldMessage setSelectable:YES];
 
         _fieldTimestamp = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetWidth([_viewContainer frame]) - 210, 10, 190, 20)];
         [_fieldTimestamp setAutoresizingMask:CPViewMinXMargin];
@@ -116,6 +118,7 @@ TNMessageViewBubbleColorNotice      = 3;
         [_fieldTimestamp setValue:[CPFont systemFontOfSize:9.0] forThemeAttribute:@"font" inState:CPThemeStateNormal];
         [_fieldTimestamp setValue:[CPColor colorWithHexString:@"808080"] forThemeAttribute:@"text-color" inState:CPThemeStateNormal];
         [_fieldTimestamp setAlignment:CPRightTextAlignment];
+        [_fieldTimestamp setSelectable:YES];
 
         [_viewContainer addSubview:_fieldAuthor];
         [_viewContainer addSubview:_fieldMessage];
